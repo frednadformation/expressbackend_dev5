@@ -9,6 +9,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Appel de la dependances dotenv
 require('dotenv').config();
 
+var cors = require('cors');
+app.use(cors());
+
 var mongoose = require('mongoose');
 const url = process.env.DATABASE_URL
 
@@ -47,7 +50,7 @@ app.post("/nouveaucontact", function (req, res) {
     Data.save()
     .then(() => {
         console.log("Contact saved !");
-        res.redirect('/');
+        res.redirect('http://localhost:3000/');
     })
     .catch(error => console.log(error));
 });
@@ -63,7 +66,8 @@ app.post("/nouveaucontact", function (req, res) {
 app.get('/', function (req, res) {
 
     Contact.find().then(data =>{
-        res.render('Home', {data:data});
+        // res.render('Home', {data:data});
+        res.json(data);
     })
     .catch(error => console.log(error));
 
@@ -78,7 +82,8 @@ app.get('/contact/:identifiant', function(req,res){
     Contact.findOne({
         _id : req.params.identifiant
     }).then(data =>{
-        res.render('EditContact', {data:data});
+        // res.render('EditContact', {data:data});
+        res.json(data);
     })
     .catch(error => console.log(error));
 })
@@ -98,7 +103,7 @@ app.put('/updatecontact/:id', function(req, res){
     .then(result =>{
         console.log(result);
         console.log("contact updated !");
-        res.redirect('/');
+        res.redirect('http://localhost:3000/allcontacts');
     })
     .catch(error => console.log(error));
 
@@ -109,7 +114,7 @@ app.delete('/deletecontact/:id', function(req, res){
     Contact.findOneAndDelete({_id : req.params.id})
     .then(()=>{
         console.log("contact deleted");
-        res.redirect('/');
+        res.redirect('http://localhost:3000/allcontacts');
     })
     .catch(error => console.log(error));
 });
@@ -172,7 +177,8 @@ app.post('/nouveaublog', function(req, res){
 app.get('/allposts', function(req, res){
     Blog.find().then(data => {
         console.log("récuperation donnée réussi !");
-        res.render('AllPosts', {data:data});
+        // res.render('AllPosts', {data:data});
+        res.json(data);
     })
     .catch(error => console.log(error));
 });
@@ -181,7 +187,8 @@ app.get('/allposts', function(req, res){
 app.get('/blog/:id', function(req, res){
     Blog.findOne({_id : req.params.id})
     .then(data =>{
-        res.render('EditBlog', {data:data});
+        // res.render('EditBlog', {data:data});
+        res.json(data);
     })
     .catch(error => console.log(error));
 });
