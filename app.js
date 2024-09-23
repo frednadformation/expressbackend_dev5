@@ -27,6 +27,37 @@ app.use(methodOverride('_method'));
 //Appel de la dependances bcrypt
 const bcrypt = require('bcrypt');
 
+//Multer pour upload d'image
+const multer = require('multer');
+
+app.use(express.static('uploads'));
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) =>{
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) =>{
+        cb(null, file.originalname);
+    }
+});
+
+/**
+ * Partie upload image
+ */
+const upload = multer({storage})
+app.post('/upload', upload.single('image'), (req, res) =>{
+
+    if(!req.file){
+        res.status(400).send('No file uploaded !');
+    }
+    else{
+        res.send('File uploaded successfully');
+    }
+
+
+});
+
+
 //Import du model contact
 var Contact = require ("./models/Contact");
 // import du model Blog
