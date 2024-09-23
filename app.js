@@ -53,9 +53,17 @@ app.post('/upload', upload.single('image'), (req, res) =>{
     else{
         res.send('File uploaded successfully');
     }
-
-
 });
+
+app.post('/uploadmultipleimages', upload.array('images', 5), (req, res)=>{
+    
+    if(!req.files || req.files.length === 0){
+        res.status(400).send('No file uploaded !');
+    }
+    else{
+        res.send('File uploaded successfully');
+    }
+})
 
 
 //Import du model contact
@@ -189,17 +197,19 @@ app.get('/ajoutblog', function(req, res){
     res.render('NewBlog')
 })
 //Route pour enregistrer/sauvegarder un blog
-app.post('/nouveaublog', function(req, res){
+app.post('/nouveaublog', upload.single('image'), function(req, res){
     const Data = new Blog({
         sujet: req.body.sujet,
         auteur: req.body.auteur,
         description: req.body.description,
-        message: req.body.message
+        message: req.body.message,
+        imageName : req.file.filename
     })
 
     Data.save().then(()=>{
         console.log('Blog enregistré !');
-        res.redirect('/allposts');
+        // res.redirect('/allposts');
+        res.send('Blog enregistré !')
     })
     .catch(error => console.log(error));
 });

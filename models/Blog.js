@@ -5,6 +5,7 @@ var blogSchema = mongoose.Schema({
     auteur : {type : String},
     description : {type : String},
     message : {type : String},
+    imageName : {type : String},
 
 })
 
