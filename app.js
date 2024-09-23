@@ -50,7 +50,7 @@ app.post("/nouveaucontact", function (req, res) {
     Data.save()
     .then(() => {
         console.log("Contact saved !");
-        res.redirect('http://localhost:3000/');
+        res.redirect(process.env.FRONTEND_LINK);
     })
     .catch(error => console.log(error));
 });
@@ -103,7 +103,7 @@ app.put('/updatecontact/:id', function(req, res){
     .then(result =>{
         console.log(result);
         console.log("contact updated !");
-        res.redirect('http://localhost:3000/allcontacts');
+        res.redirect(process.env.FRONTEND_LINK + '/allcontacts');
     })
     .catch(error => console.log(error));
 
@@ -114,7 +114,7 @@ app.delete('/deletecontact/:id', function(req, res){
     Contact.findOneAndDelete({_id : req.params.id})
     .then(()=>{
         console.log("contact deleted");
-        res.redirect('http://localhost:3000/allcontacts');
+        res.redirect(process.env.FRONTEND_LINK + '/allcontacts');
     })
     .catch(error => console.log(error));
 });
