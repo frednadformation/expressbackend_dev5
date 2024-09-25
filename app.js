@@ -396,6 +396,11 @@ app.get('/getJWT', function(req, res){
     res.json(req.cookies["access-token"]);
 });
 
+app.get('/logout', function(req, res){
+    res.clearCookie("access-token");
+    res.redirect('http://localhost:3000/');
+});
+
 
 var server = app.listen(5000, function(){
     console.log('Server listening on port 5000 !');
