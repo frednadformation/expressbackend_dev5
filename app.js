@@ -392,6 +392,10 @@ app.get('/admin', function(req, res){
     .catch(error => console.log(error));
 });
 
+app.get('/getJWT', function(req, res){
+    res.json(req.cookies["access-token"]);
+});
+
 
 var server = app.listen(5000, function(){
     console.log('Server listening on port 5000 !');
