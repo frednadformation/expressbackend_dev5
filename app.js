@@ -26,6 +26,9 @@ app.use(methodOverride('_method'));
 
 //Appel de la dependances bcrypt
 const bcrypt = require('bcrypt');
+//Appel au fichier JWT.js
+
+const {createToken, validateToken} = require('./JWT');
 
 //Multer pour upload d'image
 const multer = require('multer');
@@ -370,7 +373,13 @@ app.post('/api/connexion', function(req, res){
             res.redirect("/admin");
         }
         else{
-            res.render('Profil', {data: user})
+            const accessToken = createToken(user);
+            res.cookie("access-token", accessToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 30, // 30 jours en ms
+                httpOnly: true
+            }) 
+    
+            res.json("LOGGED IN");
         }
     })
     .catch(error => console.log(error));
